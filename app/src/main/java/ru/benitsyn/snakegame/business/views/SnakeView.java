@@ -39,15 +39,15 @@ public class SnakeView extends View {
                         case Wall:
                             mPaint.setColor(Color.GREEN);
                             break;
-                        case SnakeHead:
+                       /* case SnakeHead:
                             mPaint.setColor(Color.RED);
-                            break;
-                        case SnakeTail:
+                            break;*/
+                        /*case SnakeTail:
                             mPaint.setColor(Color.GREEN);
                             break;
                         case Fruit:
                             mPaint.setColor(Color.RED);
-                            break;
+                            break;*/
                     }
                     canvas.drawCircle(circleSizeX, circleSizeY, circleRadius, mPaint);
                 }

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".MainMenuActivity">
 <ru.benitsyn.snakegame.business.views.SnakeView
-    android:id="@+id/snakeView"
+    android:id="@+id/snake"
     android:layout_width="match_parent"
     android:layout_height="match_parent"/>
 
