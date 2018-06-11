@@ -3,7 +3,7 @@ package ru.benitsyn.snakegame.business.enums;
 public enum TileType {
     Nothing,
     Wall,
-    /*SnakeHead,
+    SnakeHead,
     SnakeTail,
-    Fruit*/
+    Fruit
 }

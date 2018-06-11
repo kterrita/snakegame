@@ -16,12 +16,12 @@ public class MainMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
+        gameEngine = new GameEngine();
+        gameEngine.initGame();
+
         snakeView = (SnakeView) findViewById(R.id.snake);
         snakeView.setSnakeViewMap(gameEngine.getMap());
         snakeView.invalidate();
 
-
-        gameEngine = new GameEngine();
-        gameEngine.initGame();
     }
 }

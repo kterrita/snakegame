@@ -26,8 +26,8 @@ public class SnakeView extends View {
         super.onDraw(canvas);
 
         if (snakeViewMap != null) {
-            float circleSizeX = canvas.getWidth() / snakeViewMap.length;
-            float circleSizeY = canvas.getHeight() / snakeViewMap[0].length;
+            float circleSizeX = canvas.getWidth() / snakeViewMap.length; //38
+            float circleSizeY = canvas.getHeight() / snakeViewMap[0].length;//38
             float circleRadius = Math.min(circleSizeX, circleSizeY) / 2f;
 
             for (int x = 0; x < snakeViewMap.length; x++) {
@@ -39,17 +39,17 @@ public class SnakeView extends View {
                         case Wall:
                             mPaint.setColor(Color.GREEN);
                             break;
-                       /* case SnakeHead:
+                        case SnakeHead:
                             mPaint.setColor(Color.RED);
-                            break;*/
-                        /*case SnakeTail:
+                            break;
+                        case SnakeTail:
                             mPaint.setColor(Color.GREEN);
                             break;
                         case Fruit:
                             mPaint.setColor(Color.RED);
-                            break;*/
+                            break;
                     }
-                    canvas.drawCircle(circleSizeX, circleSizeY, circleRadius, mPaint);
+                    canvas.drawCircle(x * circleSizeX + circleSizeX, y * circleSizeY + circleSizeY, circleRadius, mPaint);
                 }
             }
         }
