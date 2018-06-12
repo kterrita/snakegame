@@ -25,7 +25,7 @@ public class MainMenuActivity extends AppCompatActivity {
         snakeView = findViewById(R.id.snake);
         snakeView.setSnakeViewMap(gameEngine.getMap());
         snakeView.invalidate();
-        simpleOnGestureListener = new GestureDetector(this, new TapUpListener());
+        simpleOnGestureListener = new GestureDetector(this, new TapDownListener());
     }
 
     //todo: we have to implement method which restores data after alt+tab
@@ -36,7 +36,7 @@ public class MainMenuActivity extends AppCompatActivity {
         return true;
     }
 
-    private class TapUpListener extends GestureDetector.SimpleOnGestureListener {
+    private class TapDownListener extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onDown(MotionEvent event) {
             return super.onDown(event);
