@@ -1,4 +1,4 @@
-package ru.benitsyn.snakegame.business.coordinates;
+package ru.benitsyn.snakegame.business.position;
 
 public class Coordinates {
     private int x;

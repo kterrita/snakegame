@@ -7,54 +7,51 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
+import ru.benitsyn.snakegame.business.engine.GameEngine;
 import ru.benitsyn.snakegame.business.enums.TileType;
 
 public class SnakeView extends View {
-    private Paint mPaint = new Paint();
+    private Paint mPaint;
     private TileType[][] snakeViewMap;
 
     public SnakeView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mPaint = new Paint();
     }
 
     public void setSnakeViewMap(TileType[][] map) {
         this.snakeViewMap = map;
     }
 
-
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-
         if (snakeViewMap != null) {
-            float circleSizeX = canvas.getWidth() / snakeViewMap.length; //38
-            float circleSizeY = canvas.getHeight() / snakeViewMap[0].length;//38
-            float circleRadius = Math.min(circleSizeX, circleSizeY) / 2f; //38
+            float circleSizeX = canvas.getWidth() / GameEngine.getFieldWidth(); //38.0
+            float circleSizeY = canvas.getHeight() / GameEngine.getFieldHeight();//37.0
+            float circleRadius = Math.min(circleSizeX, circleSizeY) / 2f; //18.5
 
-            for (int x = 0; x < snakeViewMap.length; x++) {
-                for (int y = 0; y < snakeViewMap[x].length; y++) {
+            for (int x = 0; x < GameEngine.getFieldWidth(); x++) {
+                for (int y = 0; y < GameEngine.getFieldHeight(); y++) {
                     switch (snakeViewMap[x][y]) {
-                        case Nothing:
+                        case NOTHING:
                             mPaint.setColor(Color.WHITE);
                             break;
-                        case Wall:
+                        case WALL:
                             mPaint.setColor(Color.GRAY);
                             break;
-                        case SnakeHead:
+                        case SNAKE_HEAD:
                             mPaint.setColor(Color.BLACK);
                             break;
-                        case SnakeTail:
+                        case SNAKE_TAIL:
                             mPaint.setColor(Color.GREEN);
                             break;
-                        case Fruit:
+                        case FRUIT:
                             mPaint.setColor(Color.RED);
                             break;
                     }
-                    canvas.drawCircle(x * circleSizeX + circleSizeX, y * circleSizeY + circleSizeY, circleRadius, mPaint);
+                    canvas.drawCircle(x * circleSizeX + circleRadius, y * circleSizeY + circleRadius, circleRadius, mPaint);
                 }
             }
         }
-
-
     }
 }

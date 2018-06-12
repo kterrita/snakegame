@@ -4,35 +4,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import ru.benitsyn.snakegame.business.coordinates.Coordinates;
+import ru.benitsyn.snakegame.business.position.Coordinates;
 import ru.benitsyn.snakegame.business.enums.TileType;
 
 public class GameEngine {
-    private static final int GAMEWIDTH = 28;
-    private static final int GAMEHEIGHT = 42;
+    private static final int FIELD_WIDTH = 30;
+    private static final int FIELD_HEIGHT = 44;
+    private static int COUNT = 0;
 
     private List<Coordinates> walls = new ArrayList<>();
     private List<Coordinates> fruits = new ArrayList<>();
     private List<Coordinates> snake = new ArrayList<>();
-    private static int count = 0;
 
     public GameEngine() {
-    }
-
-    public List<Coordinates> getSnake() {
-        return snake;
     }
 
     public void initGame() {
         addWalls();
         addSnake();
         addFruits();
-
-
     }
 
     private void addSnake() {
-        Coordinates coordStart = new Coordinates(GAMEWIDTH / 2, GAMEHEIGHT / 2);
+        Coordinates coordStart = new Coordinates(FIELD_WIDTH / 2, FIELD_HEIGHT / 2);
 
         snake.add(coordStart);
         snake.add(new Coordinates(coordStart.getX() - 1, coordStart.getY()));
@@ -42,57 +36,67 @@ public class GameEngine {
 
     private void addFruits() {
         Random random = new Random();
-        while (count < 2) {
-            int coordX = random.nextInt(GAMEWIDTH - 2) + 1;
-            int coordY = random.nextInt(GAMEHEIGHT - 2) + 1;
+        while (COUNT < 2) {
+            int coordX = random.nextInt(FIELD_WIDTH - 2) + 1;
+            int coordY = random.nextInt(FIELD_HEIGHT - 2) + 1;
 
             Coordinates coordinateFruit = new Coordinates(coordX, coordY);
             if (!fruits.contains(coordinateFruit) && !snake.contains(coordinateFruit)) {
                 fruits.add(coordinateFruit);
-                count++;
+                COUNT++;
             }
         }
     }
 
     private void addWalls() {
         //add top and bottom walls
-        for (int x = 0; x < GAMEWIDTH; x++) {
+        for (int x = 0; x < FIELD_WIDTH; x++) {
             walls.add(new Coordinates(x, 0));
-            walls.add(new Coordinates(x, GAMEHEIGHT - 1));
+            walls.add(new Coordinates(x, FIELD_HEIGHT - 1));
         }
         //add left and right walls
-        for (int y = 1; y < GAMEHEIGHT; y++) {
+        for (int y = 1; y < FIELD_HEIGHT; y++) {
             walls.add(new Coordinates(0, y));
-            walls.add(new Coordinates(GAMEWIDTH - 1, y));
+            walls.add(new Coordinates(FIELD_WIDTH - 1, y));
         }
 
     }
 
     public TileType[][] getMap() {
-        TileType[][] map = new TileType[GAMEWIDTH][GAMEHEIGHT];
-        for (int x = 0; x < GAMEWIDTH; x++) {
-            for (int y = 0; y < GAMEHEIGHT; y++) {
-                map[x][y] = TileType.Nothing;
+        TileType[][] map = new TileType[FIELD_WIDTH][FIELD_HEIGHT];
+        for (int x = 0; x < FIELD_WIDTH; x++) {
+            for (int y = 0; y < FIELD_HEIGHT; y++) {
+                map[x][y] = TileType.NOTHING;
             }
         }
 
         for (Coordinates wall : walls) {
-            map[wall.getX()][wall.getY()] = TileType.Wall;
+            map[wall.getX()][wall.getY()] = TileType.WALL;
         }
 
         for (Coordinates fruit : fruits) {
-            map[fruit.getX()][fruit.getY()] = TileType.Fruit;
+            map[fruit.getX()][fruit.getY()] = TileType.FRUIT;
         }
 
         for (int i = 0; i < snake.size(); i++) {
             if (i == 0) {
-                map[snake.get(i).getX()][snake.get(i).getY()] = TileType.SnakeHead;
+                map[snake.get(i).getX()][snake.get(i).getY()] = TileType.SNAKE_HEAD;
             } else {
-                map[snake.get(i).getX()][snake.get(i).getY()] = TileType.SnakeTail;
+                map[snake.get(i).getX()][snake.get(i).getY()] = TileType.SNAKE_TAIL;
             }
         }
         return map;
     }
 
+    public static int getFieldWidth() {
+        return FIELD_WIDTH;
+    }
 
+    public static int getFieldHeight() {
+        return FIELD_HEIGHT;
+    }
+
+    public List<Coordinates> getSnake() {
+        return snake;
+    }
 }
