@@ -41,13 +41,12 @@ public class MainMenuActivity extends AppCompatActivity {
         scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                gameEngine.moveSnake();
                 gameEngine.updateSnake();
                 snakeView.setSnakeViewMap(gameEngine.getMap());
                 snakeView.postInvalidate();
 
             }
-        }, delayMillis, 5000, TimeUnit.MILLISECONDS);
+        }, delayMillis, 500, TimeUnit.MILLISECONDS);
 
     }
 
@@ -67,16 +66,16 @@ public class MainMenuActivity extends AppCompatActivity {
             if (deltaX > deltaY) {
                 //east or west
                 if (up.getX() > down.getX()) {
-                    gameEngine.setLastDirection(Direction.EAST);
+                    gameEngine.setCurrentDirection(Direction.EAST);
                 } else {
-                    gameEngine.setLastDirection(Direction.WEST);
+                    gameEngine.setCurrentDirection(Direction.WEST);
                 }
             } else {
                 //south or north
                 if (up.getY() > down.getY()) {
-                    gameEngine.setLastDirection(Direction.SOUTH);
+                    gameEngine.setCurrentDirection(Direction.SOUTH);
                 } else {
-                    gameEngine.setLastDirection(Direction.NORTH);
+                    gameEngine.setCurrentDirection(Direction.NORTH);
                 }
             }
             return true;

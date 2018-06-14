@@ -5,14 +5,13 @@ import java.util.List;
 import java.util.Random;
 
 import ru.benitsyn.snakegame.business.enums.Direction;
-import ru.benitsyn.snakegame.business.position.Coordinates;
 import ru.benitsyn.snakegame.business.enums.TileType;
+import ru.benitsyn.snakegame.business.position.Coordinates;
 
 public class GameEngine {
     private static final int FIELD_WIDTH = 30;
     private static final int FIELD_HEIGHT = 44;
     private static int COUNT = 0;
-    private Direction lastDirection = Direction.EAST;
     private Direction currentDirection = Direction.EAST;
 
     private List<Coordinates> walls = new ArrayList<>();
@@ -37,22 +36,13 @@ public class GameEngine {
         snake.add(new Coordinates(coordStart.getX() - 2, coordStart.getY()));
     }
 
-    public void moveSnake() {
-
-        for (int i = snake.size() - 1; i >= 0; i--) {
-            snake.get(i).setX(snake.get(i).getX() + 1);
-            snake.get(i).setY(snake.get(i).getY());
-        }
-    }
-
     public void updateSnake() {
+        for (int i = snake.size() - 1; i > 0; i--) {
+            snake.get(i).setX(snake.get(i - 1).getX());
+            snake.get(i).setY(snake.get(i - 1).getY());
+        }
         switch (currentDirection) {
             case SOUTH:
-                for (int i = 1; i < snake.size(); i++) {
-                    Coordinates coordinates = snake.get(i - 1);
-                    snake.get(i).setX(coordinates.getX());
-                    snake.get(i).setY(coordinates.getY());
-                }
                 snake.get(0).setY(snake.get(0).getY() + 1);
                 break;
             case NORTH:
@@ -134,7 +124,7 @@ public class GameEngine {
         return snake;
     }
 
-    public void setLastDirection(Direction lastDirection) {
-        this.lastDirection = lastDirection;
+    public void setCurrentDirection(Direction currentDirection) {
+        this.currentDirection = currentDirection;
     }
 }
