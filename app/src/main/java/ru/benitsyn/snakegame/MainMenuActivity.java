@@ -1,15 +1,11 @@
 package ru.benitsyn.snakegame;
 
 import android.os.Bundle;
-import android.os.Looper;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.Toast;
-
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import ru.benitsyn.snakegame.business.engine.GameEngine;
 import ru.benitsyn.snakegame.business.enums.Direction;
@@ -21,8 +17,8 @@ public class MainMenuActivity extends AppCompatActivity {
     private GameEngine gameEngine;
     private SnakeView snakeView;
     private GestureDetector simpleOnGestureListener;
-    private ScheduledExecutorService scheduledExecutorService;
-    private long delayMillis = 2000L;
+    final Handler handler = new Handler();
+    private long delayMillis = 500L;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,22 +36,20 @@ public class MainMenuActivity extends AppCompatActivity {
     }
 
     private void execute() {
-        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
+        Runnable task = new Runnable() {
             @Override
             public void run() {
-
                 gameEngine.updateSnake();
-                if (gameEngine.getGameState().equals(GameState.END)){
+                if (gameEngine.getGameState().equals(GameState.END)) {
                     Toast.makeText(getApplicationContext(), "The End", Toast.LENGTH_SHORT).show();
-                    scheduledExecutorService.shutdownNow();
+                    handler.removeCallbacks(this);
                 }
                 snakeView.setSnakeViewMap(gameEngine.getMap());
                 snakeView.postInvalidate();
-
+                handler.postDelayed(this, delayMillis);
             }
-        }, delayMillis, 500, TimeUnit.MILLISECONDS);
-
+        };
+        handler.post(task);
     }
 
 
@@ -73,16 +67,16 @@ public class MainMenuActivity extends AppCompatActivity {
 
             if (deltaX > deltaY) {
                 //east or west
-                if (up.getX() > down.getX()) {
+                if (up.getX() > down.getX() && !gameEngine.getCurrentDirection().equals(Direction.WEST)) {
                     gameEngine.setCurrentDirection(Direction.EAST);
-                } else {
+                } else if (up.getX() < down.getX() && !gameEngine.getCurrentDirection().equals(Direction.EAST)) {
                     gameEngine.setCurrentDirection(Direction.WEST);
                 }
             } else {
                 //south or north
-                if (up.getY() > down.getY()) {
+                if (up.getY() > down.getY() && !gameEngine.getCurrentDirection().equals(Direction.NORTH)) {
                     gameEngine.setCurrentDirection(Direction.SOUTH);
-                } else {
+                } else if (up.getY() < down.getY() && !gameEngine.getCurrentDirection().equals(Direction.SOUTH)) {
                     gameEngine.setCurrentDirection(Direction.NORTH);
                 }
             }

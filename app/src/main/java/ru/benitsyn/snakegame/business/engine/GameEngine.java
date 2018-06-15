@@ -175,6 +175,10 @@ public class GameEngine {
         this.currentDirection = currentDirection;
     }
 
+    public Direction getCurrentDirection() {
+        return currentDirection;
+    }
+
     public GameState getGameState() {
         return gameState;
     }
