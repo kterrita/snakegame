@@ -1,9 +1,11 @@
 package ru.benitsyn.snakegame;
 
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.widget.Toast;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -11,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 import ru.benitsyn.snakegame.business.engine.GameEngine;
 import ru.benitsyn.snakegame.business.enums.Direction;
+import ru.benitsyn.snakegame.business.enums.GameState;
 import ru.benitsyn.snakegame.business.views.SnakeView;
 
 public class MainMenuActivity extends AppCompatActivity {
@@ -31,8 +34,8 @@ public class MainMenuActivity extends AppCompatActivity {
         snakeView = findViewById(R.id.snake);
         snakeView.setSnakeViewMap(gameEngine.getMap());
 
-
         simpleOnGestureListener = new GestureDetector(this, new TapDownListener());
+
         execute();
     }
 
@@ -41,7 +44,12 @@ public class MainMenuActivity extends AppCompatActivity {
         scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
+
                 gameEngine.updateSnake();
+                if (gameEngine.getGameState().equals(GameState.END)){
+                    Toast.makeText(getApplicationContext(), "The End", Toast.LENGTH_SHORT).show();
+                    scheduledExecutorService.shutdownNow();
+                }
                 snakeView.setSnakeViewMap(gameEngine.getMap());
                 snakeView.postInvalidate();
 
@@ -81,4 +89,5 @@ public class MainMenuActivity extends AppCompatActivity {
             return true;
         }
     }
+
 }

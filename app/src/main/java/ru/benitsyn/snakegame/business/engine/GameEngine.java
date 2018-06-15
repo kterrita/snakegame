@@ -1,24 +1,30 @@
 package ru.benitsyn.snakegame.business.engine;
 
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import ru.benitsyn.snakegame.business.enums.Direction;
+import ru.benitsyn.snakegame.business.enums.GameState;
 import ru.benitsyn.snakegame.business.enums.TileType;
 import ru.benitsyn.snakegame.business.position.Coordinates;
 
 public class GameEngine {
     private static final int FIELD_WIDTH = 30;
     private static final int FIELD_HEIGHT = 44;
-    private static int COUNT = 0;
+
+    private static int COUNT_FRUIT = 0;
+
     private Direction currentDirection = Direction.EAST;
+
+    private GameState gameState = GameState.RUNNING;
 
     private List<Coordinates> walls = new ArrayList<>();
 
     private List<Coordinates> fruits = new ArrayList<>();
     private List<Coordinates> snake = new ArrayList<>();
-
     public GameEngine() {
     }
 
@@ -34,40 +40,81 @@ public class GameEngine {
         snake.add(coordStart);
         snake.add(new Coordinates(coordStart.getX() - 1, coordStart.getY()));
         snake.add(new Coordinates(coordStart.getX() - 2, coordStart.getY()));
+        snake.add(new Coordinates(coordStart.getX() - 3, coordStart.getY()));
+        snake.add(new Coordinates(coordStart.getX() - 4, coordStart.getY()));
+        snake.add(new Coordinates(coordStart.getX() - 5, coordStart.getY()));
+
     }
 
     public void updateSnake() {
-        for (int i = snake.size() - 1; i > 0; i--) {
-            snake.get(i).setX(snake.get(i - 1).getX());
-            snake.get(i).setY(snake.get(i - 1).getY());
+        if(walls.contains(snake.get(0)) || checkCollision()){
+            // add window ""The end"
+            gameState = GameState.END;
+            return;
         }
-        switch (currentDirection) {
-            case SOUTH:
-                snake.get(0).setY(snake.get(0).getY() + 1);
-                break;
-            case NORTH:
-                snake.get(0).setY(snake.get(0).getY() - 1);
-                break;
-            case EAST:
-                snake.get(0).setX(snake.get(0).getX() + 1);
-                break;
-            case WEST:
-                snake.get(0).setX(snake.get(0).getX() - 1);
-                break;
+        if (fruits.contains(snake.get(0))) {
+            switch (currentDirection) {
+
+                case SOUTH:
+                    snake.add(0, new Coordinates(snake.get(0).getX(), snake.get(0).getY() + 1));
+                    break;
+                case NORTH:
+                    snake.add(0, new Coordinates(snake.get(0).getX(), snake.get(0).getY() - 1));
+                    break;
+                case EAST:
+                    snake.add(0, new Coordinates(snake.get(0).getX() + 1, snake.get(0).getY()));
+                    break;
+                case WEST:
+                    snake.add(0, new Coordinates(snake.get(0).getX() - 1, snake.get(0).getY()));
+                    break;
+            }
+            COUNT_FRUIT--;
+            fruits.remove(snake.get(1));
+            addFruits();
+
+        } else {
+            for (int i = snake.size() - 1; i > 0; i--) {
+                snake.get(i).setX(snake.get(i - 1).getX());
+                snake.get(i).setY(snake.get(i - 1).getY());
+            }
+            switch (currentDirection) {
+
+                case SOUTH:
+                    snake.get(0).setY(snake.get(0).getY() + 1);
+                    break;
+                case NORTH:
+                    snake.get(0).setY(snake.get(0).getY() - 1);
+                    break;
+                case EAST:
+                    snake.get(0).setX(snake.get(0).getX() + 1);
+                    break;
+                case WEST:
+                    snake.get(0).setX(snake.get(0).getX() - 1);
+                    break;
+            }
         }
+    }
+
+    private boolean checkCollision() {
+        for (int i = 1; i < snake.size() ; i++) {
+            if (snake.get(0).equals(snake.get(i))){
+                return true;
+            }
+        }
+        return false;
     }
 
 
     private void addFruits() {
         Random random = new Random();
-        while (COUNT < 2) {
+        while (COUNT_FRUIT < 2) {
             int coordX = random.nextInt(FIELD_WIDTH - 2) + 1;
             int coordY = random.nextInt(FIELD_HEIGHT - 2) + 1;
 
             Coordinates coordinateFruit = new Coordinates(coordX, coordY);
             if (!fruits.contains(coordinateFruit) && !snake.contains(coordinateFruit)) {
                 fruits.add(coordinateFruit);
-                COUNT++;
+                COUNT_FRUIT++;
             }
         }
     }
@@ -126,5 +173,9 @@ public class GameEngine {
 
     public void setCurrentDirection(Direction currentDirection) {
         this.currentDirection = currentDirection;
+    }
+
+    public GameState getGameState() {
+        return gameState;
     }
 }
