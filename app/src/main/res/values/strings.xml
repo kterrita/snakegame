@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">snakegame</string>
+    <string name="start">Start</string>
 </resources>
