@@ -5,7 +5,8 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.widget.Toast;
+import android.content.Intent;
+
 
 import ru.benitsyn.snakegame.business.engine.GameEngine;
 import ru.benitsyn.snakegame.business.enums.Direction;
@@ -35,21 +36,28 @@ public class MainMenuActivity extends AppCompatActivity {
         execute();
     }
 
+    public void endGame() {
+        Intent intent = new Intent(this, EndPage.class);
+        startActivity(intent);
+
+    }
+
+
     private void execute() {
-        Runnable task = new Runnable() {
+        handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 gameEngine.updateSnake();
-                if (gameEngine.getGameState().equals(GameState.END)) {
-                    Toast.makeText(getApplicationContext(), "The End", Toast.LENGTH_SHORT).show();
-                    handler.removeCallbacks(this);
+                if (gameEngine.getGameState().equals(GameState.RUNNING)) {
+                    handler.postDelayed(this, delayMillis);
+                }
+                if (gameEngine.getGameState().equals(GameState.END)){
+                    endGame();
                 }
                 snakeView.setSnakeViewMap(gameEngine.getMap());
                 snakeView.postInvalidate();
-                handler.postDelayed(this, delayMillis);
             }
-        };
-        handler.post(task);
+        }, delayMillis);
     }
 
 

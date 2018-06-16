@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">snakegame</string>
     <string name="start">Start</string>
+    <string name="the_end">The End</string>
+    <string name="play_again">Play again?</string>
 </resources>
