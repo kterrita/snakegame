@@ -3,14 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="5dp"
+    android:background="#339933"
     tools:context=".StartPage">
 
     <Button
         android:id="@+id/startButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="@string/start"
+        android:background="#003300"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:textSize="15sp"
         android:onClick="startGame"
         />
 

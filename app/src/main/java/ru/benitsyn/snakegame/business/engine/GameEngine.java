@@ -50,6 +50,9 @@ public class GameEngine {
         if(walls.contains(snake.get(0)) || checkCollision()){
             // add window ""The end"
             gameState = GameState.END;
+            snake.clear();
+            addSnake();
+
             return;
         }
         if (fruits.contains(snake.get(0))) {
@@ -171,15 +174,19 @@ public class GameEngine {
         return snake;
     }
 
-    public void setCurrentDirection(Direction currentDirection) {
-        this.currentDirection = currentDirection;
-    }
-
     public Direction getCurrentDirection() {
         return currentDirection;
     }
 
+    public void setCurrentDirection(Direction currentDirection) {
+        this.currentDirection = currentDirection;
+    }
+
     public GameState getGameState() {
         return gameState;
+    }
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
     }
 }
