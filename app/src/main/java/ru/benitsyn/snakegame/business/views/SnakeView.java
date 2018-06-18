@@ -37,19 +37,20 @@ public class SnakeView extends View {
                             mPaint.setColor(Color.WHITE);
                             break;
                         case WALL:
-                            mPaint.setColor(Color.GRAY);
+                            mPaint.setColor(Color.argb(255,0, 128, 0));
                             break;
                         case SNAKE_HEAD:
-                            mPaint.setColor(Color.BLACK);
+                            mPaint.setColor(Color.argb(255,0, 100, 0));
                             break;
                         case SNAKE_TAIL:
-                            mPaint.setColor(Color.GREEN);
+                            mPaint.setColor(Color.argb(255,152, 251, 152));
                             break;
                         case FRUIT:
-                            mPaint.setColor(Color.RED);
+                            mPaint.setColor(Color.argb(255,220, 20, 60));
                             break;
                     }
-                    canvas.drawCircle(x * circleSizeX + circleRadius, y * circleSizeY + circleRadius, circleRadius, mPaint);
+                    canvas.drawCircle(x * circleSizeX + circleSizeX / 2f + circleRadius / 2f,
+                            y * circleSizeY + circleSizeY / 2f + circleRadius / 2f, circleRadius, mPaint);
                 }
             }
         }

@@ -12,8 +12,8 @@ import ru.benitsyn.snakegame.business.enums.TileType;
 import ru.benitsyn.snakegame.business.position.Coordinates;
 
 public class GameEngine {
-    private static final int FIELD_WIDTH = 30;
-    private static final int FIELD_HEIGHT = 44;
+    private static final int FIELD_WIDTH = 28; //30
+    private static final int FIELD_HEIGHT = 42;  //44
 
     private static int COUNT_FRUIT = 0;
 
